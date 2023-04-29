@@ -7,11 +7,12 @@ import java.util.UUID
 
 @Entity
 @Table(name = "ticket")
-data class Ticket(
+data class Ticket (
     @Id
     val id: UUID,
     val movie: String,
     val theater: String,
+    val room: String,
     val time: String? = null,
     val language: String? = null,
     val subtitles: Boolean? = null,
