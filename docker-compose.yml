@@ -3,6 +3,7 @@ version: '3.7'
 services:
   postgres:
     image: postgres
+    restart: always
     environment:
       - POSTGRES_USER=mrmorales
       - POSTGRES_PASSWORD=pass
@@ -11,3 +12,21 @@ services:
       - '5432:5432'
     volumes:
       - "./docker/sql/script.sql:/docker-entrypoint-initdb.d/script.sql"
+    networks:
+      - postgres-compose-network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "admin@admin.com"
+      PGADMIN_DEFAULT_PASSWORD: "admin"
+    ports:
+      - "3000:80"
+    depends_on:
+      - postgres
+    networks:
+      - postgres-compose-network
+
+networks:
+  postgres-compose-network:
+    driver: bridge

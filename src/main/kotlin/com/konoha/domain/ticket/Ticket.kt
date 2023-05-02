@@ -1,4 +1,4 @@
-package com.konoha.dojo.domain.ticket
+package com.konoha.domain.ticket
 
 import jakarta.persistence.Entity
 import jakarta.persistence.Id

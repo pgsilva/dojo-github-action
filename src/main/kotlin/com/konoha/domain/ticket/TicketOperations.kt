@@ -1,7 +1,7 @@
-package com.konoha.dojo.domain.ticket
+package com.konoha.domain.ticket
 
-import com.konoha.dojo.datasource.jpa.ticket.TicketRepository
-import com.konoha.dojo.input.resources.req.TicketRequest
+import com.konoha.datasource.jpa.ticket.TicketRepository
+import com.konoha.input.resources.req.TicketRequest
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import java.util.*

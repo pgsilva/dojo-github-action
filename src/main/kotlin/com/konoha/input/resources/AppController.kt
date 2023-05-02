@@ -1,4 +1,4 @@
-package com.konoha.dojo.input.resources
+package com.konoha.input.resources
 
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping

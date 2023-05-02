@@ -1,6 +1,6 @@
-package com.konoha.dojo.domain.login
+package com.konoha.domain.login
 
-import com.konoha.dojo.input.resources.Access
+import com.konoha.input.resources.Access
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 

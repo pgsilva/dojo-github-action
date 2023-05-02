@@ -1,4 +1,4 @@
-package com.konoha.dojo.input.resources.req
+package com.konoha.input.resources.req
 
 data class TicketRequest(
     val movie: String,
