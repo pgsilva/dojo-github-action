@@ -42,7 +42,7 @@ class TicketOperations(val repository: TicketRepository) {
                         subtitles = request.subtitles,
                         exhibition = request.exhibition
                     )
-            updatedTask
+            repository.save(updatedTask)
         }.orElse(
             null
         )

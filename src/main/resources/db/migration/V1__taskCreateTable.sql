@@ -1,9 +1,3 @@
-CREATE TABLE IF NOT EXISTS "login" (
-    "id" UUID,
-    "user" VARCHAR(20) NOT NULL,
-    "password" VARCHAR(8) NOT NULL,
-    CONSTRAINT "pk_login" PRIMARY KEY ("id")
-);
 
 CREATE TABLE IF NOT EXISTS "ticket" (
     "id" UUID,
@@ -16,3 +10,7 @@ CREATE TABLE IF NOT EXISTS "ticket" (
     "exhibition" VARCHAR(200)  NULL,
     CONSTRAINT "pk_ticket" PRIMARY KEY ("id")
 );
+
+INSERT INTO public.ticket(
+	id, movie, theater, room, "time", language, subtitles, exhibition)
+	VALUES ('c7cbc04d-a89a-4515-9dcb-8193cc0452b3', 'Guardiões da Galaxia vol 3','Cinemark Aricanduva', '9', '21h30m','DUB', false, 'XD 3D');

@@ -42,6 +42,10 @@ dependencies {
 	testImplementation("org.junit.platform:junit-platform-launcher:1.9.3")
 	testImplementation("io.mockk:mockk:1.13.5")
 	testImplementation("junit:junit:4.13.2")
+	testImplementation("org.testcontainers:testcontainers:1.18.0")
+	testImplementation("org.testcontainers:postgresql:1.18.0")
+	testImplementation("org.testcontainers:junit-jupiter:1.18.0")
+
 }
 
 dependencyManagement {

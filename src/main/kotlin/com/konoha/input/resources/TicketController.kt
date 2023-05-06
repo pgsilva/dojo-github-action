@@ -18,7 +18,7 @@ class TicketController(
     fun findAll(): ResponseEntity<out MutableIterable<Ticket>> = ResponseEntity.ok().body(ops.findAll())
 
     @GetMapping("/{id}")
-    fun findById(@RequestParam id: UUID): ResponseEntity<out Ticket> =
+    fun findById(@PathVariable id: UUID): ResponseEntity<out Ticket> =
         ops.findById(id).map { task ->
             ResponseEntity.ok(task)
         }.orElse(
@@ -42,8 +42,7 @@ class TicketController(
         val updated = ops.put(request, id) ?: return ResponseEntity.notFound().build()
 
         return ResponseEntity
-            .ok()
-            .body(updated)
+            .ok(updated)
     }
 
     @DeleteMapping
