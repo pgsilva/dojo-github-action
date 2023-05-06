@@ -8,4 +8,5 @@ class DojoApplication
 
 fun main(args: Array<String>) {
 	runApplication<DojoApplication>(*args)
+
 }
