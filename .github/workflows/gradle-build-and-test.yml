@@ -46,7 +46,7 @@ jobs:
         arguments: build -x test
 
   release:
-    need: build-and-test
+    needs: build-and-test
     runs-on: ubuntu-latest
 
     steps:
