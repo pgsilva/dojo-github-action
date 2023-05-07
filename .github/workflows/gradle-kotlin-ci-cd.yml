@@ -105,6 +105,7 @@ jobs:
       - name: Publish Release
         uses: softprops/action-gh-release@v1
         with:
+          tag_name: ${{ steps.bump_version.outputs.version_tag }}
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
