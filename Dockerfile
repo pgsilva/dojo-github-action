@@ -1,15 +1,9 @@
-ENV APP_HOME=/usr/app/
-WORKDIR $APP_HOME
-COPY build.gradle settings.gradle gradlew $APP_HOME
-COPY gradle $APP_HOME/gradle
-RUN ./gradlew build || return 0
-COPY . .
-RUN ./gradlew build
+FROM eclipse-temurin:17-jdk-alpine
 
-FROM openjdk:8
-ENV ARTIFACT_NAME=konoha-0.0.1-SNAPSHOT.jar
-ENV APP_HOME=/usr/app/
-WORKDIR $APP_HOME
-COPY --from=TEMP_BUILD_IMAGE $APP_HOME/build/libs/$ARTIFACT_NAME .
+VOLUME /tmp
+
+COPY /build/libs/*.jar app.jar
+
 EXPOSE 8080
-CMD ["java","-jar","/konoha-0.0.1-SNAPSHOT.jar","-Dspring.profiles.active=prod"]
+
+ENTRYPOINT ["java", "-Dspring.profiles.active=prod", "-jar", "/app.jar"]
