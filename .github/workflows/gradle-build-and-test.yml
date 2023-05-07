@@ -17,10 +17,10 @@ permissions:
   contents: read
 
 jobs:
-    test:
-      runs-on: ubuntu-latest
+  test:
+    runs-on: ubuntu-latest
 
-      steps:
+    steps:
       - uses: actions/checkout@v3
 
       - name: Set up JDK 17
@@ -40,58 +40,61 @@ jobs:
         with:
           arguments: build test
 
-    build:
-      needs: test
-      runs-on: ubuntu-latest
+  build:
+    needs: test
+    runs-on: ubuntu-latest
 
-      steps:
-        - uses: actions/checkout@v3
+    steps:
+      - uses: actions/checkout@v3
 
-        - name: Set up JDK 17
-          uses: actions/setup-java@v3
-          with:
-            java-version: '17'
-            distribution: 'temurin'
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
 
-        - name: Change wrapper permissions
-          run: chmod +x ./gradlew
+      - name: Change wrapper permissions
+        run: chmod +x ./gradlew
 
-        - name: Build with Gradle
-          uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
-          with:
-            arguments: build -x test
+      - name: Build with Gradle
+        uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+        with:
+          arguments: build -x test
 
-    deploy:
-      needs: build
-      runs-on: ubuntu-latest
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
 
-      steps:
-        - uses: actions/checkout@v3
+    steps:
+      - uses: actions/checkout@v3
 
-        - name: Deploy in Railway
-          run: echo Hi, mr Morales this step is under development, sorry.
+      - name: Deploy in Railway
+        run: echo Hi, mr Morales this step is under development, sorry.
 
-    release:
-      needs: deploy
-      runs-on: ubuntu-latest
+  release:
+    needs: deploy
+    runs-on: ubuntu-latest
 
-      steps:
-        - uses: paulhatch/semantic-version@v5.0.2
-          with:
-            tag_prefix: "v"
-            major_pattern: "(MAJOR)"
-            major_regexp_flags: ""
-            minor_pattern: "(MINOR)"
-            minor_regexp_flags: ""
-            version_format: "${major}.${minor}.${patch}-prerelease${increment}"
-            # Optional path to check for changes. If any changes are detected in the path the
-            # 'changed' output will true. Enter multiple paths separated by spaces.
-            change_path: "src/main"
-            # Named version, will be used as suffix for name version tag
-            namespace: dojo
-            # If this is set to true, *every* commit will be treated as a new version.
-            bump_each_commit: true
-            # If true, the body of commits will also be searched for major/minor patterns to determine the version type.
-            search_commit_body: false
-            # The output method used to generate list of users, 'csv' or 'json'.
-            enable_prerelease_mode: true
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Bump version
+        uses: paulhatch/semantic-version@v5.0.2
+        with:
+          tag_prefix: "v"
+          major_pattern: "BREAKING CHANGE"
+          minor_pattern: "feat:"
+          version_format: "${major}.${minor}.${patch}"
+          change_path: "."
+          namespace: develop
+          bump_each_commit: true
+          search_commit_body: false
+          enable_prerelease_mode: true
+
+      - name: Tag Release (vX.Y.Z)
+        run: |
+            git tag ${{ steps.tag_version_develop.outputs.version_tag }}
+            git push origin ${{ steps.tag_version_develop.outputs.version_tag }}
