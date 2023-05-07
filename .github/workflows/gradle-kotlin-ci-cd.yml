@@ -117,7 +117,7 @@ jobs:
 #            "PASSWORD_DB=${{ secrets.PASSWORD_DB }}"
 
   github-release:
-    needs: gradle-test
+    needs: gradle-build
     runs-on: ubuntu-latest
 
     steps:
