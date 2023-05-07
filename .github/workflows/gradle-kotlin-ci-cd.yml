@@ -91,7 +91,7 @@ jobs:
           minor_pattern: "feat:"
           version_format: "${major}.${minor}.${patch}"
           change_path: "."
-          namespace: develop
+          #namespace: develop
           bump_each_commit: true
           search_commit_body: false
           enable_prerelease_mode: true
