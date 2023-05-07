@@ -95,6 +95,8 @@ jobs:
           enable_prerelease_mode: true
 
       - name: Tag Release (vX.Y.Z)
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
         run: |
             git tag ${{ steps.tag_version_develop.outputs.version_tag }}
             git push origin ${{ steps.tag_version_develop.outputs.version_tag }}
