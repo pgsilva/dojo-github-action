@@ -62,13 +62,16 @@ jobs:
         with:
           arguments: build -x test
 
+      - name: Copy Jar file
+        run: mv build/libs/$(ls build/libs) app.jar
+
       - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v3.1.0
+      - uses: actions/upload-artifact@v3.1.0
         with:
           # Artifact name
-          name: src
+          name: jar-file
           # A file, directory or wildcard pattern that describes what to upload
-          path: .
+          path: app.jar
 
   docker-image:
     needs: gradle-build
@@ -77,17 +80,18 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: setup Docker Build
+      - name: Setup Docker Build
         uses: docker/setup-buildx-action@v2.0.0
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
 
       - name: Download a Build Artifact
         uses: actions/download-artifact@v3.0.0
         with:
-        # Artifact name
-          name: src
-
-      - name: Upload Docker Image
-        run: echo Hi, mr Morales this step is under development, sorry.
+          # Artifact name
+          name: jar-file
+          path: app.jar
 
       - name: Docker Login
         # You may pin to the exact commit or the version.
