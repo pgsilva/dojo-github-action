@@ -59,7 +59,7 @@ jobs:
             arguments: build -x test
 
     deploy:
-      needs: build-and-test
+      needs: build
       runs-on: ubuntu-latest
 
       steps:
