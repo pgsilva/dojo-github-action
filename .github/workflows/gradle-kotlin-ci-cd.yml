@@ -72,7 +72,7 @@ jobs:
       - name: Deploy in Railway
         run: echo Hi, mr Morales this step is under development, sorry.
 
-  release:
+  tag:
     needs: deploy
     runs-on: ubuntu-latest
 
@@ -96,8 +96,13 @@ jobs:
           search_commit_body: false
           enable_prerelease_mode: true
 
-      - name: Tag Release (vX.Y.Z)
+      - name: Publish Tag (vX.Y.Z)
         run: |
             echo Version: ${{ steps.bump_version.outputs.version_tag }}
             git tag ${{ steps.bump_version.outputs.version_tag }}
             git push origin ${{ steps.bump_version.outputs.version_tag }}
+
+      - name: Publish Release
+        run: |
+          git release create ${{ steps.bump_version.outputs.version_tag }} --generate-notes
+          git push origin ${{ steps.bump_version.outputs.version_tag }}
