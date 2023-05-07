@@ -69,10 +69,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Setup Node.js and semantic-release plugins
-        run: touch package.json
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Setup Node.js
+        run: npm init -y
 
       - name: Semantic Release
         uses: cycjimmy/semantic-release-action@v3
