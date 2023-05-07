@@ -42,7 +42,7 @@ jobs:
           arguments: build test
 
   gradle-build:
-    needs: test
+    needs: gradle-test
     runs-on: ubuntu-latest
 
     steps:
@@ -71,7 +71,7 @@ jobs:
           path: .
 
   docker-image:
-    needs: build
+    needs: gradle-build
     runs-on: ubuntu-latest
 
     steps:
