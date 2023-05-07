@@ -17,36 +17,36 @@ permissions:
   contents: read
 
 jobs:
-#  build-and-test:
-#    runs-on: ubuntu-latest
-#
-#    steps:
-#    - uses: actions/checkout@v3
-#
-#    - name: Set up JDK 17
-#      uses: actions/setup-java@v3
-#      with:
-#        java-version: '17'
-#        distribution: 'temurin'
-#
-#    - name: Start containers
-#      run: docker-compose -f "docker-compose.yml" up -d --build
-#
-#    - name: Change wrapper permissions
-#      run: chmod +x ./gradlew
-#
-#    - name: Test with Gradle
-#      uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
-#      with:
-#        arguments: build test
-#
-#    - name: Build with Gradle
-#      uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
-#      with:
-#        arguments: build -x test
+  #  build-and-test:
+  #    runs-on: ubuntu-latest
+  #
+  #    steps:
+  #    - uses: actions/checkout@v3
+  #
+  #    - name: Set up JDK 17
+  #      uses: actions/setup-java@v3
+  #      with:
+  #        java-version: '17'
+  #        distribution: 'temurin'
+  #
+  #    - name: Start containers
+  #      run: docker-compose -f "docker-compose.yml" up -d --build
+  #
+  #    - name: Change wrapper permissions
+  #      run: chmod +x ./gradlew
+  #
+  #    - name: Test with Gradle
+  #      uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+  #      with:
+  #        arguments: build test
+  #
+  #    - name: Build with Gradle
+  #      uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+  #      with:
+  #        arguments: build -x test
 
   deploy:
-#    needs: build-and-test
+    #    needs: build-and-test
     runs-on: ubuntu-latest
 
     steps:
@@ -58,24 +58,24 @@ jobs:
   release:
     needs: deploy
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
 
     steps:
-      - uses: actions/setup-node@v1
+      - uses: paulhatch/semantic-version@v5.0.2
         with:
-          node-version: 12
-
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        run: npm init -y
-
-      - name: Semantic Release
-        uses: cycjimmy/semantic-release-action@v3
-        with:
-          branches: "main"
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+          tag_prefix: "v"
+          major_pattern: "(MAJOR)"
+          major_regexp_flags: ""
+          minor_pattern: "(MINOR)"
+          minor_regexp_flags: ""
+          version_format: "${major}.${minor}.${patch}-prerelease${increment}"
+          # Optional path to check for changes. If any changes are detected in the path the
+          # 'changed' output will true. Enter multiple paths separated by spaces.
+          change_path: "src/main"
+          # Named version, will be used as suffix for name version tag
+          namespace: dojo
+          # If this is set to true, *every* commit will be treated as a new version.
+          bump_each_commit: false
+          # If true, the body of commits will also be searched for major/minor patterns to determine the version type.
+          search_commit_body: false
+          # The output method used to generate list of users, 'csv' or 'json'.
+          enable_prerelease_mode: true
