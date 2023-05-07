@@ -29,6 +29,9 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Change wrapper permissions
+        run: chmod +x ./gradlew
+
       - name: Start containers
         run: docker-compose -f "docker-compose.yml" up -d --build
 
