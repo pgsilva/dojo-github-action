@@ -52,15 +52,23 @@ jobs:
       contents: write
 
     steps:
-      - name: checkout
+      - name: Checkout
         uses: actions/checkout@v2
         with:
           persist-credentials: false
 
-      - name: semantic-release
+      - name: Setup Node.js and semantic-release plugins
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm install -g semantic-release @semantic-release/changelog @semantic-release/commit-analyzer @semantic-release/exec semantic-release/git semantic-release/release-notes-generator
+
+      - name: Semantic-release
         uses: ahmadnassri/action-semantic-release@v2
+        with:
+          branches: "main"
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          branches: "main"
