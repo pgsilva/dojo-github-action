@@ -80,6 +80,7 @@ jobs:
         with:
           ref: main
           fetch-depth: 0
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Bump version
         uses: paulhatch/semantic-version@v5.0.2
@@ -95,8 +96,6 @@ jobs:
           enable_prerelease_mode: true
 
       - name: Tag Release (vX.Y.Z)
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
         run: |
             git tag ${{ steps.tag_version_develop.outputs.version_tag }}
             git push origin ${{ steps.tag_version_develop.outputs.version_tag }}
