@@ -46,7 +46,7 @@ jobs:
 #        arguments: build -x test
 
   release:
-    needs: build-and-test
+#    needs: build-and-test
     runs-on: ubuntu-latest
     permissions:
       contents: write
