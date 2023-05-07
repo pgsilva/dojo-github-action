@@ -73,7 +73,7 @@ jobs:
         run: echo Hi, mr Morales this step is under development, sorry.
 
   release:
-    needs: deploy
+    needs: docker-image
     runs-on: ubuntu-latest
 
     steps:
@@ -107,4 +107,4 @@ jobs:
         with:
           generate_release_notes: true
         env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
