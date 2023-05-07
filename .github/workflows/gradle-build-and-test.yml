@@ -48,10 +48,14 @@ jobs:
   release:
     needs: build-and-test
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - name: checkout
         uses: actions/checkout@v2
+        with:
+          persist-credentials: false
 
       - name: semantic-release
         uses: ahmadnassri/action-semantic-release@v2
