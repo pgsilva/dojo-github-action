@@ -80,7 +80,6 @@ jobs:
         with:
           ref: main
           fetch-depth: 0
-          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Bump version
         uses: paulhatch/semantic-version@v5.0.2
