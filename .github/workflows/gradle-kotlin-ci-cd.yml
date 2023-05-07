@@ -18,7 +18,7 @@ permissions:
   packages: write
 
 jobs:
-  test:
+  gradle-test:
     runs-on: ubuntu-latest
 
     steps:
@@ -41,7 +41,7 @@ jobs:
         with:
           arguments: build test
 
-  build:
+  gradle-build:
     needs: test
     runs-on: ubuntu-latest
 
@@ -62,17 +62,60 @@ jobs:
         with:
           arguments: build -x test
 
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.1.0
+        with:
+          # Artifact name
+          name: src
+          # A file, directory or wildcard pattern that describes what to upload
+          path: .
+
   docker-image:
-#    needs: build
+    needs: build
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
 
+      - name: setup Docker Build
+        uses: docker/setup-buildx-action@v2.0.0
+
+      - name: Download a Build Artifact
+        uses: actions/download-artifact@v3.0.0
+        with:
+        # Artifact name
+          name: src
+
       - name: Upload Docker Image
         run: echo Hi, mr Morales this step is under development, sorry.
 
-  release:
+      - name: Docker Login
+        # You may pin to the exact commit or the version.
+        # uses: docker/login-action@49ed152c8eca782a232dede0303416e8f356c37b
+        uses: docker/login-action@v2.0.0
+        with:
+          # Username used to log against the Docker registry
+          username: milezz
+          # Password or personal access token used to log against the Docker registry
+          password: ${{ secrets.PASSWORD_DOCKER_HUB }}
+
+      - name: Build and push Docker images
+        # You may pin to the exact commit or the version.
+        # uses: docker/build-push-action@e551b19e49efd4e98792db7592c17c09b89db8d8
+        uses: docker/build-push-action@v3.0.0
+        with:
+          # Build's context is the set of files located in the specified PATH or URL
+          context: .
+          # Path to the Dockerfile
+          file: ./Dockerfile
+          # Push is a shorthand for --output=type=registry
+          push: true
+          # List of tags
+          tags: milezz/konoha:${{github.ref_name}}
+          build-args: |
+            "PASSWORD_DB=${{ secrets.PASSWORD_DB }}"
+
+  github-release:
     needs: docker-image
     runs-on: ubuntu-latest
 
@@ -98,9 +141,9 @@ jobs:
 
       - name: Publish Tag (vX.Y.Z)
         run: |
-            echo Version: ${{ steps.bump_version.outputs.version_tag }}
-            git tag ${{ steps.bump_version.outputs.version_tag }}
-            git push origin ${{ steps.bump_version.outputs.version_tag }}
+          echo Version: ${{ steps.bump_version.outputs.version_tag }}
+          git tag ${{ steps.bump_version.outputs.version_tag }}
+          git push origin ${{ steps.bump_version.outputs.version_tag }}
 
       - name: Publish Release
         uses: softprops/action-gh-release@v1
